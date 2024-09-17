@@ -28,8 +28,15 @@ public class UserController {
         return userService.findAll();
     }
     @PostMapping
-    public User save(@RequestBody User user){
-        return userService.save(user);
+    public UserResponse save(@RequestBody UserDTO userDTO){
+        User userToSave = new User();
+        userToSave.setFullName(userDTO.getFullName());
+        userToSave.setEmail(userDTO.getEmail());
+        userToSave.setPassword(userDTO.getPassword());
+        userToSave.setPhone(userDTO.getPhone());
+        userToSave.setAddress(userDTO.getAddress());
+        userService.save(userToSave);
+        return new UserResponse(userToSave.getFullName(),userToSave.getEmail(),userToSave.getPhone());
     }
     @PutMapping("/{id}")
     public UserResponse update(@PathVariable long id, @RequestBody UserDTO userDTO){

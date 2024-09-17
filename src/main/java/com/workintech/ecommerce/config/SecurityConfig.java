@@ -2,6 +2,7 @@ package com.workintech.ecommerce.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
@@ -12,6 +13,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
@@ -28,9 +34,21 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
     }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSetting(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        return source;
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
+        httpSecurity.cors().configurationSource(corsConfigurationSetting());
         return httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
@@ -56,7 +74,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.DELETE,"/order/**").hasAuthority("ADMIN");
 
                     auth.requestMatchers(HttpMethod.GET,"/user/**").hasAuthority("ADMIN");
-                    auth.requestMatchers(HttpMethod.POST,"/user/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.POST,"/user/**").hasAnyAuthority("USER","ADMIN","SUPPLIER");
                     auth.requestMatchers(HttpMethod.PUT,"/user/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE,"/user/**").hasAuthority("ADMIN");
 

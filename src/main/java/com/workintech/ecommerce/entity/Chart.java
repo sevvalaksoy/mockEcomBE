@@ -19,12 +19,6 @@ public class Chart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "Quantity cannot be null")
-    private Integer quantity;
-
-    @NotNull(message = "Price cannot be null")
-    private Double price;
-
     @OneToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "user_id")
     private User user;
@@ -42,5 +36,13 @@ public class Chart {
     }
     public void removeProduct(Product product){
         products.remove(product);
+    }
+
+    public Double priceCalculator(List<Product> products){
+        double total = 0;
+        for(Product x:products){
+            total+=x.getPrice();
+        }
+        return total;
     }
 }

@@ -63,4 +63,14 @@ public class ProductServiceImpl implements ProductService{
     public List<Product> findMostAddedProductsToChart() {
         return productRepository.findMostAddedProductsToChart();
     }
+
+    @Override
+    public List<Product> getProductByName(String name) {
+        return productRepository.getProductByName(name);
+    }
+
+    @Override
+    public List<Product> findMostSoldProducts() {
+        return productRepository.findMostSoldProducts();
+    }
 }

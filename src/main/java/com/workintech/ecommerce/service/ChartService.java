@@ -6,7 +6,7 @@ import com.workintech.ecommerce.entity.Product;
 import java.util.List;
 
 public interface ChartService {
-    Chart save(long userId);
+    Chart save(Chart chart);
     Chart delete(Chart chart);
     Chart findById(long id);
     List<Chart> findAll();

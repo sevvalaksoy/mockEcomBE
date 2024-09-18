@@ -24,21 +24,21 @@ public class AuthController {
     @PostMapping("/register/user")
     public RegisterResponse registerUser(@RequestBody RegistrationUser registrationUser){
         User createdUser = authenticationService
-                .registerUser(registrationUser.getFullName(),registrationUser.getEmail(), registrationUser.getPassword());
+                .registerUser(registrationUser.getFullName(),registrationUser.getEmail(), registrationUser.getPassword(), registrationUser.getAddress(), registrationUser.getPhone());
         RegisterResponse response = new RegisterResponse(createdUser.getEmail(), "kayıt başarılı bir şekilde gerçekleşti.");
         return response;
     }
     @PostMapping("/register/admin")
     public RegisterResponse registerAdmin(@RequestBody RegistrationUser registrationUser){
         User createdUser = authenticationService
-                .registerAdmin(registrationUser.getFullName(),registrationUser.getEmail(), registrationUser.getPassword());
+                .registerAdmin(registrationUser.getFullName(),registrationUser.getEmail(), registrationUser.getPassword(), registrationUser.getAddress(), registrationUser.getPhone());
         RegisterResponse response = new RegisterResponse(createdUser.getEmail(), "kayıt başarılı bir şekilde gerçekleşti.");
         return response;
     }
     @PostMapping("/register/supplier")
     public RegisterResponse registerSupplier(@RequestBody RegistrationUser registrationUser){
         User createdUser = authenticationService
-                .registerSupplier(registrationUser.getFullName(),registrationUser.getEmail(), registrationUser.getPassword());
+                .registerSupplier(registrationUser.getFullName(),registrationUser.getEmail(), registrationUser.getPassword(), registrationUser.getAddress(), registrationUser.getPhone());
         RegisterResponse response = new RegisterResponse(createdUser.getEmail(), "kayıt başarılı bir şekilde gerçekleşti.");
         return response;
     }

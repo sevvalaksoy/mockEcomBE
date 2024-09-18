@@ -25,9 +25,17 @@ public class ProductController {
     public List<Product> getAll(){
         return productService.findAll();
     }
-    @GetMapping("/most")
+    @GetMapping("/mostlyAdded")
     public List<Product> getMostlyAddedProducts(){
         return productService.findMostAddedProductsToChart();
+    }
+    @GetMapping("/mostSold")
+    public List<Product> getMostSold(){
+        return productService.findMostSoldProducts();
+    }
+    @GetMapping("/name/{name}")
+    public List<Product> getProductByName(@PathVariable String name){
+        return productService.getProductByName(name);
     }
     @GetMapping("/{id}")
     public Product getProduct(@PathVariable long id){

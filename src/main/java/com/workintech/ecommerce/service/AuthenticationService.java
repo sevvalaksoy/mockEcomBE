@@ -33,7 +33,7 @@ public class AuthenticationService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User registerUser(String fullName, String email, String password){
+    public User registerUser(String fullName, String email, String password, String address, String phone){
         if(userRepository.findByEmail(email).isPresent()){
             throw new AccountException("User with given email already exist", HttpStatus.BAD_REQUEST);
         }
@@ -47,10 +47,12 @@ public class AuthenticationService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setRoles(roles);
+        user.setAddress(address);
+        user.setPhone(phone);
 
         return userRepository.save(user);
     }
-    public User registerAdmin(String fullName, String email, String password){
+    public User registerAdmin(String fullName, String email, String password, String address, String phone){
         if(userRepository.findByEmail(email).isPresent()){
             throw new AccountException("User with given email already exist", HttpStatus.BAD_REQUEST);
         }
@@ -64,10 +66,12 @@ public class AuthenticationService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setRoles(roles);
+        user.setAddress(address);
+        user.setPhone(phone);
 
         return userRepository.save(user);
     }
-    public User registerSupplier(String fullName, String email, String password){
+    public User registerSupplier(String fullName, String email, String password, String address, String phone){
         if(userRepository.findByEmail(email).isPresent()){
             throw new AccountException("User with given email already exist", HttpStatus.BAD_REQUEST);
         }
@@ -82,6 +86,8 @@ public class AuthenticationService {
         user.setEmail(email);
         user.setPassword(encodedPassword);
         user.setRoles(roles);
+        user.setAddress(address);
+        user.setPhone(phone);
 
         return userRepository.save(user);
     }

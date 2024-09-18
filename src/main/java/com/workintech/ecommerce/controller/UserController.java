@@ -5,6 +5,8 @@ import com.workintech.ecommerce.dto.UserResponse;
 import com.workintech.ecommerce.entity.User;
 import com.workintech.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +17,11 @@ import java.util.List;
 @Validated
 public class UserController {
     private UserService userService;
+    private UserDetailsService userDetailsService;
     @Autowired
-    public UserController(UserService userService){
+    public UserController(UserService userService, UserDetailsService userDetailsService){
         this.userService = userService;
+        this.userDetailsService = userDetailsService;
     }
     @GetMapping("/{id}")
     public User getUser(@PathVariable long id){
@@ -26,6 +30,10 @@ public class UserController {
     @GetMapping
     public List<User> getAllUsers(){
         return userService.findAll();
+    }
+    @GetMapping("/verify")
+    public UserDetails login(@RequestBody UserDetails userDetails){
+        return userDetailsService.loadUserByUsername(userDetails.getUsername());
     }
     @PostMapping
     public UserResponse save(@RequestBody UserDTO userDTO){

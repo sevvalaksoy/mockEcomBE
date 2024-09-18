@@ -38,9 +38,11 @@ public class User implements UserDetails {
     private String fullName;
 
     @Size(max = 250)
+    @NotNull(message ="Address cannot be null")
     private String address;
 
     @Size(max = 11)
+    @NotNull(message ="Phone cannot be null")
     private String phone;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")

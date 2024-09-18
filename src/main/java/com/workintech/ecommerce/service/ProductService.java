@@ -11,4 +11,6 @@ public interface ProductService {
     Product findById(long id);
     List<Product> findAll();
     List<Product> findMostAddedProductsToChart();
+    List<Product> getProductByName(String name);
+    List<Product> findMostSoldProducts();
 }

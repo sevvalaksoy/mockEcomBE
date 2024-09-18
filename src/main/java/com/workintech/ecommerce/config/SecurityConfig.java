@@ -53,7 +53,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/auth/**").permitAll();
 
-                    auth.requestMatchers(HttpMethod.GET,"/product/**").hasAnyAuthority("USER","ADMIN","SUPPLIER");
+                    auth.requestMatchers(HttpMethod.GET,"/product/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST,"/product/**").hasAnyAuthority("ADMIN","SUPPLIER");
                     auth.requestMatchers(HttpMethod.PUT,"/product/**").hasAnyAuthority("ADMIN","SUPPLIER");
                     auth.requestMatchers(HttpMethod.DELETE,"/product/**").hasAnyAuthority("ADMIN","SUPPLIER");
@@ -73,7 +73,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.PUT,"/order/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE,"/order/**").hasAuthority("ADMIN");
 
-                    auth.requestMatchers(HttpMethod.GET,"/user/**").hasAuthority("ADMIN");
+                    auth.requestMatchers(HttpMethod.GET,"/user/**").hasAnyAuthority("USER","ADMIN","SUPPLIER");
                     auth.requestMatchers(HttpMethod.POST,"/user/**").hasAnyAuthority("USER","ADMIN","SUPPLIER");
                     auth.requestMatchers(HttpMethod.PUT,"/user/**").hasAuthority("ADMIN");
                     auth.requestMatchers(HttpMethod.DELETE,"/user/**").hasAuthority("ADMIN");

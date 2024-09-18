@@ -27,11 +27,8 @@ public class ChartServiceImpl implements ChartService{
     }
 
     @Override
-    public Chart save(long userId) {
-        Chart chart = new Chart();
-        User user = userService.findById(userId);
-        chart.setUser(user);
-        return chart;
+    public Chart save(Chart chart) {
+        return chartRepository.save(chart);
     }
 
     @Override

@@ -1,13 +1,16 @@
 package com.workintech.ecommerce.controller;
 
 
-import com.workintech.ecommerce.entity.Order;
-import com.workintech.ecommerce.entity.OrderDetails;
+import com.workintech.ecommerce.entity.*;
+import com.workintech.ecommerce.service.ChartService;
+import com.workintech.ecommerce.service.OrderDetailService;
 import com.workintech.ecommerce.service.OrderService;
+import com.workintech.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -15,9 +18,16 @@ import java.util.List;
 @Validated
 public class OrderController {
     private OrderService orderService;
+    private UserService userService;
+    private OrderDetailService orderDetailService;
+    private ChartService chartService;
+
     @Autowired
-    public OrderController(OrderService orderService){
+    public OrderController(OrderService orderService,UserService userService,OrderDetailService orderDetailService,ChartService chartService){
         this.orderService = orderService;
+        this.userService = userService;
+        this.orderDetailService = orderDetailService;
+        this.chartService = chartService;
     }
     @GetMapping
     public List<Order> getAllOrders(){
@@ -31,10 +41,27 @@ public class OrderController {
     public OrderDetails getOrderDetails(@PathVariable long id){
         return orderService.getOrderDetails(id);
     }
-    @PostMapping
-    public Order save(@RequestBody Order order){
-        return orderService.save(order);
+    @PostMapping("/{userId}")
+    public Order save(@PathVariable long userId){
+        User user = userService.findById(userId);
+        Chart chart = chartService.findById(userId);
+
+        OrderDetails odDetails = new OrderDetails();
+
+        List<Product> products = new ArrayList<>(chart.getProducts());
+        odDetails.setProducts(products);
+        odDetails.setPrice(chart.priceCalculator(products));
+        odDetails.setQuantity(products.size());
+
+        orderDetailService.save(odDetails);
+
+        Order orderToPost = new Order();
+        orderToPost.setUser(user);
+        orderToPost.setOrderDetails(odDetails);
+
+        return orderService.save(orderToPost);
     }
+
     @PutMapping("/{id}")
     public Order update(@PathVariable long id, @RequestBody Order order){
         Order orderToUpdate = orderService.findById(id);

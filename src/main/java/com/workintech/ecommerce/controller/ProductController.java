@@ -5,6 +5,7 @@ import com.workintech.ecommerce.entity.Product;
 import com.workintech.ecommerce.service.CategoryService;
 import com.workintech.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +43,7 @@ public class ProductController {
         return productService.findById(id);
     }
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public Product post(@RequestBody ProductDTO productDTO) {
         Product product = new Product();
         product.setName(productDTO.getName());
@@ -65,6 +67,7 @@ public class ProductController {
         return productService.save(productToUpdate);
     }
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Product delete(@PathVariable long id){
         Product productToDelete = productService.findById(id);
         productService.delete(productToDelete);

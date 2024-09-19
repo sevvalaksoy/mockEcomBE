@@ -1,10 +1,9 @@
 package com.workintech.ecommerce.service;
 
 import com.workintech.ecommerce.entity.Product;
-import com.workintech.ecommerce.exception.AccountException;
 import com.workintech.ecommerce.repository.ProductRepository;
+import com.workintech.ecommerce.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,32 +25,27 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public Product update(long id) {
+        Validation.isIdValid(id);
+        Validation.existenceValidation(productRepository, id, true);
         Optional<Product> optionalProduct = productRepository.findById(id);
-        if(optionalProduct.isPresent()){
-            return productRepository.save(optionalProduct.get());
-        }
-        throw new AccountException("There is no product with the given id", HttpStatus.NOT_FOUND);
+        return productRepository.save(optionalProduct.get());
     }
 
     @Override
     public Product delete(Product product) {
+        Validation.existenceValidation(productRepository, product.getId(), true);
         Optional<Product> optionalProduct = productRepository.findById(product.getId());
-        if(optionalProduct.isPresent()){
-            Product productToDelete = optionalProduct.get();
-            productRepository.delete(product);
-            return productToDelete;
-        }
-        throw new AccountException("There is no such product", HttpStatus.NOT_FOUND);
+        Product productToDelete = optionalProduct.get();
+        productRepository.delete(product);
+        return productToDelete;
     }
 
     @Override
     public Product findById(long id) {
+        Validation.isIdValid(id);
+        Validation.existenceValidation(productRepository,id,true);
         Optional<Product> optionalProduct = productRepository.findById(id);
-        if(optionalProduct.isPresent()){
-            return optionalProduct.get();
-        } else {
-            throw new AccountException("There is no such product with the given id", HttpStatus.NOT_FOUND);
-        }
+        return optionalProduct.get();
     }
 
     @Override

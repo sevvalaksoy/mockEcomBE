@@ -1,5 +1,6 @@
 package com.workintech.ecommerce.service;
 
+import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Product;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public interface ProductService {
     Product findById(long id);
     List<Product> findAll();
     List<Product> findMostAddedProductsToChart();
-    List<Product> getProductByName(String name);
+    List<ProductResponse> getProductByName(String name);
     List<Product> findMostSoldProducts();
 }

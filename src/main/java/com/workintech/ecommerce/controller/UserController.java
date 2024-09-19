@@ -5,6 +5,7 @@ import com.workintech.ecommerce.dto.UserResponse;
 import com.workintech.ecommerce.entity.User;
 import com.workintech.ecommerce.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.validation.annotation.Validated;
@@ -36,6 +37,7 @@ public class UserController {
         return userDetailsService.loadUserByUsername(userDetails.getUsername());
     }
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public UserResponse save(@RequestBody UserDTO userDTO){
         User userToSave = new User();
         userToSave.setFullName(userDTO.getFullName());

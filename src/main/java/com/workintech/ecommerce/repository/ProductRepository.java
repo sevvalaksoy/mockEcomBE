@@ -1,5 +1,6 @@
 package com.workintech.ecommerce.repository;
 
+import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "GROUP BY p.id " +
             "ORDER BY COUNT(c.id) DESC", nativeQuery = true)
     List<Product> findMostAddedProductsToChart();
+
     @Query("SELECT p FROM Product p WHERE p.name=:name")
     List<Product> getProductByName(String name);
 

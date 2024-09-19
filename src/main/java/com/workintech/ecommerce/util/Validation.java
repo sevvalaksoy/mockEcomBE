@@ -1,6 +1,7 @@
 package com.workintech.ecommerce.util;
 
 import com.workintech.ecommerce.exception.AccountException;
+import com.workintech.ecommerce.repository.CategoryRepository;
 import com.workintech.ecommerce.repository.ProductRepository;
 import com.workintech.ecommerce.repository.UserRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,6 +20,11 @@ public class Validation {
                     throw new AccountException("Product is not found with id: " + id, HttpStatus.NOT_FOUND);
                 }
             }
+            if(jpaRepository instanceof CategoryRepository){
+                if(jpaRepository.findById(id).isEmpty()){
+                    throw new AccountException("Category is not found with id: " + id, HttpStatus.NOT_FOUND);
+                }
+            }
             if(jpaRepository instanceof UserRepository){
                 if(jpaRepository.findById(id).isEmpty()){
                     throw new AccountException("User is not found with id: " + id, HttpStatus.NOT_FOUND);
@@ -28,6 +34,11 @@ public class Validation {
             if(jpaRepository instanceof ProductRepository){
                 if(jpaRepository.findById(id).isPresent()){
                     throw new AccountException("Product already exists", HttpStatus.BAD_REQUEST);
+                }
+            }
+            if(jpaRepository instanceof CategoryRepository){
+                if(jpaRepository.findById(id).isPresent()){
+                    throw new AccountException("Category already exists", HttpStatus.BAD_REQUEST);
                 }
             }
             if(jpaRepository instanceof UserRepository){

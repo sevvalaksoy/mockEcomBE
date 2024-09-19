@@ -1,6 +1,7 @@
 package com.workintech.ecommerce.controller;
 
 import com.workintech.ecommerce.dto.ProductDTO;
+import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Product;
 import com.workintech.ecommerce.service.CategoryService;
 import com.workintech.ecommerce.service.ProductService;
@@ -35,7 +36,7 @@ public class ProductController {
         return productService.findMostSoldProducts();
     }
     @GetMapping("/name/{name}")
-    public List<Product> getProductByName(@PathVariable String name){
+    public List<ProductResponse> getProductByName(@PathVariable String name){
         return productService.getProductByName(name);
     }
     @GetMapping("/{id}")

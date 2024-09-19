@@ -34,6 +34,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public Category save(Category category) {
+        Validation.existenceValidation(categoryRepository, category.getId(), false);
         return categoryRepository.save(category);
     }
 

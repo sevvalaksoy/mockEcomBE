@@ -51,7 +51,9 @@ public class SecurityConfig {
         httpSecurity.cors().configurationSource(corsConfigurationSetting());
         return httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/auth/**").permitAll();
+                    auth.requestMatchers("/auth/register/user/**").permitAll();
+                    auth.requestMatchers("/auth/register/admin/**").hasAuthority("ADMIN");
+                    auth.requestMatchers("/auth/register/supplier/**").hasAuthority("ADMIN");
 
                     auth.requestMatchers(HttpMethod.GET,"/product/**").permitAll();
                     auth.requestMatchers(HttpMethod.POST,"/product/**").hasAnyAuthority("ADMIN","SUPPLIER");

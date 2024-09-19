@@ -1,11 +1,16 @@
 package com.workintech.ecommerce.service;
 
+import com.workintech.ecommerce.converter.DtoConverter;
+import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Product;
+import com.workintech.ecommerce.exception.AccountException;
 import com.workintech.ecommerce.repository.ProductRepository;
 import com.workintech.ecommerce.util.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,8 +64,16 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> getProductByName(String name) {
-        return productRepository.getProductByName(name);
+    public List<ProductResponse> getProductByName(String name) {
+        List<Product> products = productRepository.getProductByName(name);
+        List<ProductResponse> productResponses = new ArrayList<>();
+        for(Product p: products){
+            productResponses.add(DtoConverter.converter(p));
+        }
+        if(productResponses.isEmpty()){
+            throw new AccountException("There are no products with the given name", HttpStatus.NOT_FOUND);
+        }
+        return productResponses;
     }
 
     @Override

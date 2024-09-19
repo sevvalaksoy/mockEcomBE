@@ -5,24 +5,21 @@ import com.workintech.ecommerce.dto.ProductResponse;
 import com.workintech.ecommerce.entity.Product;
 import com.workintech.ecommerce.service.CategoryService;
 import com.workintech.ecommerce.service.ProductService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("/product")
 @Validated
 public class ProductController {
-    private ProductService productService;
-    private CategoryService categoryService;
-    @Autowired
-    public ProductController(ProductService productService,CategoryService categoryService){
-        this.productService = productService;
-        this.categoryService = categoryService;
-    }
+    private final ProductService productService;
+    private final CategoryService categoryService;
+
     @GetMapping("/all")
     public List<Product> getAll(){
         return productService.findAll();
